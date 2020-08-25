@@ -1,0 +1,55 @@
+#!/usr/bin/python3
+"""
+    that creates and distributes an archive to
+    your web servers, using the function deploy:
+"""
+import os.path
+from datetime import datetime
+from fabric.api import *
+from fabric.operations import run, put, sudo
+env.hosts = ['34.73.122.60', '54.90.72.128']
+
+
+def do_pack():
+    '''Function to generate a .tgz archive'''
+    if not os.path.exists('versions'):
+        local('mkdir versions')
+    formater = '%Y%m%d%H%M%S'
+    final_file = 'versions/web_static_{}.tgz'\
+                 .format(datetime.now().strftime(formater))
+    local('tar -czvf {} web_static'.format(final_file))
+    return final_file
+
+
+def do_deploy(archive_path):
+    """ Preprares .tgz file to be deployed """
+    if (os.path.isfile(archive_path) is False):
+        return False
+
+    try:
+        fname = archive_path.split("/")[-1]
+        path_folder = ("/data/web_static/releases/" + fname.split(".")[0])
+        put(archive_path, "/tmp/")
+        run("sudo mkdir -p {}".format(path_folder))
+        run("sudo tar -xzf /tmp/{} -C {}".
+            format(fname, path_folder))
+        run("sudo rm /tmp/{}".format(fname))
+        run("sudo cp -r {}/web_static/* {}/".format(path_folder, path_folder))
+        run("sudo rm -rf {}/web_static".format(path_folder))
+        run('sudo rm -rf /data/web_static/current')
+        run("sudo ln -s {} /data/web_static/current".format(path_folder))
+        return True
+    except Exception:
+        return False
+
+
+def deploy():
+    """ Function deploy """
+
+    created_archive = do_pack()
+    if (os.path.isfile(created_archive) is False):
+        return False
+    try:
+        return(do_deploy(created_archive))
+    except Exception:
+        return False
