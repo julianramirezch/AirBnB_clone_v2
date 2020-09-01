@@ -22,3 +22,7 @@ def hbtn():
 def c_is_fun(text):
     ''' Route C is <text> '''
     return 'C {}'.format(text.replace('_', ' '))
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
