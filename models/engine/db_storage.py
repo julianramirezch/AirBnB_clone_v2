@@ -49,19 +49,17 @@ class DBStorage:
     def all(self, cls=None):
         ''' Query all objects in current db '''
         r_dic = {}
-        if cls is not None:
-            if cls in DBStorage.classes.keys():
-                query = self.__session.query(DBStorage.classes.get(cls)).all()
-            for res in query:
-                k = res.__class__.__name__ + '.' + res.id
-                r_dic[k] = res
+        if cls:
+            query = self.__session.query(cls)
         else:
             for k, v in DBStorage.classes.items():
                 if not isinstance(v, type(BaseModel)):
                     query = self.__session.query(v).all()
-                    for res in query:
-                        k = res.__class__.__name__ + '.' + res.id
-                        r_dic[k] = res
+
+        for res in query:
+            k = res.__class__.__name__ + '.' + res.id
+            r_dic[k] = res
+
         return r_dic
 
     def new(self, obj):
