@@ -27,14 +27,12 @@
           <h4>&nbsp</h4>
           <div class="popover">
             {% for state in states|sort(attribute='name') %}
-            <li>
               <h2>{{ state.name }}</h2>
               {% for city in state.cities|sort(attribute='name') %}
               <ul>
                 <li>{{ city.name }}</li>
               </ul>
               {% endfor %}
-            </li>
             {% endfor %}
           </div>
         </div>
