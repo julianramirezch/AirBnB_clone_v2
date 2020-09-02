@@ -3,7 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <title>AirBnB clone</title>
-    <link rel="shortcut icon" type="image/png" href="../static/images/hbnb_icon.png" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../static/images/hbnb_icon.png"
+    />
     <meta name="description" content="Airbnb Clone web static" />
     <meta name="author" content="Julian Ramirez" />
     <link rel="stylesheet" href="../static/styles/4-common.css" />
@@ -14,8 +18,8 @@
 
   <body>
     <header>
-			<div id="header_logo"></div>
-		</header>
+      <div id="header_logo"></div>
+    </header>
     <div class="container">
       <section class="filters">
         <div class="locations">
@@ -40,7 +44,7 @@
           <div class="popover">
             <ul>
               {% for amenity in amenities|sort(attribute='name') %}
-                <li>{{ amenity.name }}</li>
+              <li>{{ amenity.name }}</li>
               {% endfor %}
             </ul>
           </div>
