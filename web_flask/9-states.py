@@ -18,13 +18,12 @@ def states_list():
 @app.route('/states/<id>', strict_slashes=False)
 def states_id(id):
     ''' Display HTML page States by id '''
+    state = None
     states = storage.all(State)
     key = 'State.{}'.format(id)
     if key in states:
         state = states[key]
-        return render_template('9-states.html', state=state)
-    else:
-        return render_template('9-states.html', state=None)
+    return render_template('9-states.html', state=state)
 
 
 @app.teardown_appcontext
